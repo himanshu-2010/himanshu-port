@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Signal Lost</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0B0F17; color: #00D9FF;
+      font-family: 'Courier New', monospace;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; text-align: center; padding: 2rem;
+    }
+    .crt {
+      max-width: 600px;
+      border: 2px solid #1F2937;
+      border-radius: 8px;
+      padding: 3rem 2rem;
+      background: #121824;
+      box-shadow: 0 0 40px rgba(0, 217, 255, 0.08);
+    }
+    h1 { font-size: 5rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .sub { color: #9CA3AF; font-size: 1.1rem; margin-bottom: 1.5rem; }
+    .joke { color: #6B7280; font-size: 0.85rem; margin-bottom: 2rem; font-style: italic; }
+    a { color: #00D9FF; text-decoration: none; border: 1px solid #00D9FF; padding: 0.6rem 1.5rem; display: inline-block; font-size: 0.85rem; transition: 0.2s; }
+    a:hover { background: #00D9FF; color: #0B0F17; }
+    .cursor { animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="crt">
+    <h1>404</h1>
+    <p class="sub">Signal Lost. Unknown Transmission.</p>
+    <p class="joke">"The page you're looking for has gone missing. Probably testing the proton pack again."</p>
+    <p class="joke" style="margin-bottom: 2rem;">Have you considered that maybe the page doesn't want to be found? <span class="cursor">_</span></p>
+    <a href="/">[ Reboot System ]</a>
+  </div>
+</body>
+</html>
