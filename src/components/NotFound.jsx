@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 
-export default function NotFound({ onGoHome }) {
+const NotFound = memo(function NotFound({ onGoHome }) {
   const [phase, setPhase] = useState(0)
   const messages = [
     'SCANNING...',
@@ -62,4 +62,6 @@ export default function NotFound({ onGoHome }) {
       </div>
     </div>
   )
-}
+})
+
+export default NotFound

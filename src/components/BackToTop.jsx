@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 
-export default function BackToTop() {
+const BackToTop = memo(function BackToTop() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -25,4 +25,6 @@ export default function BackToTop() {
       &#x2191;
     </button>
   )
-}
+})
+
+export default BackToTop

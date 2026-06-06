@@ -1,4 +1,6 @@
-export default function Blog({ blog }) {
+import { memo } from 'react'
+
+const Blog = memo(function Blog({ blog }) {
   return (
     <section className="section blog-section" id="blog">
       <div className="container">
@@ -20,4 +22,6 @@ export default function Blog({ blog }) {
       </div>
     </section>
   )
-}
+})
+
+export default Blog

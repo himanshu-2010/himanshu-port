@@ -1,6 +1,6 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, memo } from 'react'
 
-export default function Quotes({ quotes }) {
+const Quotes = memo(function Quotes({ quotes }) {
   const [history, setHistory] = useState(() => {
     const i = Math.floor(Math.random() * quotes.length)
     return [i]
@@ -51,4 +51,6 @@ export default function Quotes({ quotes }) {
       </div>
     </section>
   )
-}
+})
+
+export default Quotes

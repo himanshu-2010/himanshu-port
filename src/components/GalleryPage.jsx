@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, memo } from 'react'
 
-export default function GalleryPage({ gallery, categories, onBack }) {
+const GalleryPage = memo(function GalleryPage({ gallery, categories, onBack }) {
   const [lightbox, setLightbox] = useState(null)
   const [lightboxIdx, setLightboxIdx] = useState(0)
 
@@ -105,4 +105,6 @@ export default function GalleryPage({ gallery, categories, onBack }) {
       </div>
     </div>
   )
-}
+})
+
+export default GalleryPage

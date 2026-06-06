@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
-export default function Contact({ links }) {
+const Contact = memo(function Contact({ links }) {
   const [sent, setSent] = useState(false)
 
   function handleSubmit(e) {
@@ -69,4 +69,6 @@ export default function Contact({ links }) {
       </div>
     </section>
   )
-}
+})
+
+export default Contact

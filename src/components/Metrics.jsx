@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, memo } from 'react'
 
-function Counter({ value, suffix }) {
+const Counter = memo(function Counter({ value, suffix }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -35,9 +35,9 @@ function Counter({ value, suffix }) {
   }
 
   return <span className="metric-value" ref={ref}>0</span>
-}
+})
 
-export default function Metrics({ metrics }) {
+const Metrics = memo(function Metrics({ metrics }) {
   return (
     <section className="metrics-section" id="metrics">
       <div className="metrics-grid">
@@ -50,4 +50,6 @@ export default function Metrics({ metrics }) {
       </div>
     </section>
   )
-}
+})
+
+export default Metrics

@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 const statusClass = { active: 'status-active', complete: 'status-complete', prototype: 'status-prototype', 'open-source': 'status-open-source' }
 
-export default function Projects({ projects, categories, links, onProjectClick }) {
+const Projects = memo(function Projects({ projects, categories, links, onProjectClick }) {
   const [filter, setFilter] = useState('all')
   const filtered = filter === 'all' ? projects : projects.filter(p => p.category === filter)
 
@@ -42,4 +42,6 @@ export default function Projects({ projects, categories, links, onProjectClick }
       </div>
     </section>
   )
-}
+})
+
+export default Projects

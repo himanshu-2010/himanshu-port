@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
-function SkillCard({ category, defaultOpen }) {
+const SkillCard = memo(function SkillCard({ category, defaultOpen }) {
   const [open, setOpen] = useState(defaultOpen)
 
   return (
@@ -19,9 +19,9 @@ function SkillCard({ category, defaultOpen }) {
       </div>
     </div>
   )
-}
+})
 
-export default function Skills({ skillCategories }) {
+const Skills = memo(function Skills({ skillCategories }) {
   return (
     <section className="section skills-section" id="skills">
       <div className="container">
@@ -35,4 +35,6 @@ export default function Skills({ skillCategories }) {
       </div>
     </section>
   )
-}
+})
+
+export default Skills

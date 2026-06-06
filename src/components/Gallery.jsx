@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
-export default function Gallery({ gallery }) {
+const Gallery = memo(function Gallery({ gallery }) {
   const [lightbox, setLightbox] = useState(null)
 
   return (
@@ -13,7 +13,7 @@ export default function Gallery({ gallery }) {
           {gallery.map((item, i) => (
             <div className="gallery-item" key={i} onClick={() => setLightbox(item)}>
               {item.type === 'video' ? (
-                <video className="gallery-item-media" muted loop preload="metadata" style={{ width: '100%', display: 'block' }}>
+                <video className="gallery-item-media" muted loop preload="none" style={{ width: '100%', display: 'block' }}>
                   <source src={item.src} type="video/mp4" />
                 </video>
               ) : (
@@ -42,4 +42,6 @@ export default function Gallery({ gallery }) {
       </div>
     </section>
   )
-}
+})
+
+export default Gallery

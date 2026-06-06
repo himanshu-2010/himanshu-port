@@ -1,4 +1,6 @@
-export default function Achievements({ achievements }) {
+import { memo } from 'react'
+
+const Achievements = memo(function Achievements({ achievements }) {
   return (
     <section className="section achievements-section" id="achievements">
       <div className="container">
@@ -19,4 +21,6 @@ export default function Achievements({ achievements }) {
       </div>
     </section>
   )
-}
+})
+
+export default Achievements

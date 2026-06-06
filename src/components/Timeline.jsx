@@ -1,4 +1,6 @@
-export default function Timeline({ timeline }) {
+import { memo } from 'react'
+
+const Timeline = memo(function Timeline({ timeline }) {
   return (
     <section className="section timeline-section" id="timeline">
       <div className="container">
@@ -19,4 +21,6 @@ export default function Timeline({ timeline }) {
       </div>
     </section>
   )
-}
+})
+
+export default Timeline

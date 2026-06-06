@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 
 const GITHUB_USER = 'himanshu-2010'
 
@@ -30,7 +30,7 @@ function RepoCard({ data }) {
   )
 }
 
-export default function OpenSource({ repos }) {
+const OpenSource = memo(function OpenSource({ repos }) {
   const [repoData, setRepoData] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -69,4 +69,6 @@ export default function OpenSource({ repos }) {
       </div>
     </section>
   )
-}
+})
+
+export default OpenSource

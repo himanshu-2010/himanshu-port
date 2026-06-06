@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import portfolio from './data/portfolio.json'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -6,20 +6,25 @@ import Metrics from './components/Metrics'
 import About from './components/About'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
-import Gallery from './components/Gallery'
-import Timeline from './components/Timeline'
-import Blog from './components/Blog'
-import OpenSource from './components/OpenSource'
-import Achievements from './components/Achievements'
-import Quotes from './components/Quotes'
-import Contact from './components/Contact'
 import Footer from './components/Footer'
-import ProjectPage from './components/ProjectPage'
-import GalleryPage from './components/GalleryPage'
-import SecretPage from './components/SecretPage'
 import StatusBar from './components/StatusBar'
 import BackToTop from './components/BackToTop'
-import NotFound from './components/NotFound'
+
+const Gallery = lazy(() => import('./components/Gallery'))
+const Timeline = lazy(() => import('./components/Timeline'))
+const Blog = lazy(() => import('./components/Blog'))
+const OpenSource = lazy(() => import('./components/OpenSource'))
+const Achievements = lazy(() => import('./components/Achievements'))
+const Quotes = lazy(() => import('./components/Quotes'))
+const Contact = lazy(() => import('./components/Contact'))
+const ProjectPage = lazy(() => import('./components/ProjectPage'))
+const GalleryPage = lazy(() => import('./components/GalleryPage'))
+const SecretPage = lazy(() => import('./components/SecretPage'))
+const NotFound = lazy(() => import('./components/NotFound'))
+
+function SectionFallback() {
+  return <div style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>Loading...</div>
+}
 
 function useScrollReveal() {
   useEffect(() => {
@@ -28,8 +33,8 @@ function useScrollReveal() {
         if (entry.isIntersecting) entry.target.classList.add('visible')
       })
     }, { threshold: 0.1 })
-    document.querySelectorAll('.section, .project-card, .timeline-card, .blog-card, .repo-card, .achievement-card, .skill-card')
-      .forEach(el => { el.classList.add('reveal'); observer.observe(el) })
+    const targets = document.querySelectorAll('.section, .project-card, .timeline-card, .blog-card, .repo-card, .achievement-card, .skill-card')
+    targets.forEach(el => { el.classList.add('reveal'); observer.observe(el) })
     return () => observer.disconnect()
   }, [])
 }
@@ -101,7 +106,9 @@ export default function App() {
   if (notFound) {
     return (
       <div className="app">
-        <NotFound onGoHome={() => { setNotFound(false); window.history.pushState(null, '', window.location.pathname) }} />
+        <Suspense fallback={<SectionFallback />}>
+          <NotFound onGoHome={() => { setNotFound(false); window.history.pushState(null, '', window.location.pathname) }} />
+        </Suspense>
       </div>
     )
   }
@@ -110,7 +117,9 @@ export default function App() {
     return (
       <div className="app">
         <Navbar links={portfolio.links} portfolio={portfolio} onOpenGallery={openGallery} onOpenProject={openProject} onOpenSecret={openSecret} onGoToSection={goToSection} />
-        <SecretPage secret={portfolio.secret} onBack={closeSecret} />
+        <Suspense fallback={<SectionFallback />}>
+          <SecretPage secret={portfolio.secret} onBack={closeSecret} />
+        </Suspense>
       </div>
     )
   }
@@ -120,7 +129,9 @@ export default function App() {
       <div ref={appRef} className="app">
         <Navbar links={portfolio.links} portfolio={portfolio} onOpenGallery={openGallery} onOpenProject={openProject} onOpenSecret={openSecret} onGoToSection={goToSection} />
         <div className="container">
-          <ProjectPage project={activeProject} onBack={closeProject} />
+          <Suspense fallback={<SectionFallback />}>
+            <ProjectPage project={activeProject} onBack={closeProject} />
+          </Suspense>
         </div>
       </div>
     )
@@ -130,7 +141,9 @@ export default function App() {
     return (
       <div className="app">
         <Navbar links={portfolio.links} portfolio={portfolio} onOpenGallery={openGallery} onOpenProject={openProject} onOpenSecret={openSecret} onGoToSection={goToSection} />
-        <GalleryPage gallery={portfolio.gallery} onBack={closeGallery} />
+        <Suspense fallback={<SectionFallback />}>
+          <GalleryPage gallery={portfolio.gallery} onBack={closeGallery} />
+        </Suspense>
       </div>
     )
   }
@@ -144,13 +157,27 @@ export default function App() {
       <About personal={portfolio.personal} />
       <Skills skillCategories={portfolio.skillCategories} />
       <Projects projects={portfolio.projects} categories={portfolio.projectFilterCategories} links={portfolio.links} onProjectClick={openProject} />
-      <Gallery gallery={portfolio.gallery} />
-      <Timeline timeline={portfolio.timeline} />
-      <Blog blog={portfolio.blog} />
-      <OpenSource repos={portfolio.openSourceRepos} />
-      <Achievements achievements={portfolio.achievements} />
-      <Quotes quotes={portfolio.quotes} />
-      <Contact links={portfolio.links} />
+      <Suspense fallback={<SectionFallback />}>
+        <Gallery gallery={portfolio.gallery} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Timeline timeline={portfolio.timeline} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Blog blog={portfolio.blog} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <OpenSource repos={portfolio.openSourceRepos} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Achievements achievements={portfolio.achievements} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Quotes quotes={portfolio.quotes} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Contact links={portfolio.links} />
+      </Suspense>
       <Footer personal={portfolio.personal} />
       <StatusBar />
       <BackToTop />

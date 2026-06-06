@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 
-export default function StatusBar() {
+const StatusBar = memo(function StatusBar() {
   const [uptime, setUptime] = useState(0)
 
   useEffect(() => {
     const start = Date.now()
     const id = setInterval(() => {
       setUptime(Math.floor((Date.now() - start) / 1000))
-    }, 1000)
+    }, 5000)
     return () => clearInterval(id)
   }, [])
 
@@ -38,4 +38,6 @@ export default function StatusBar() {
       <span className="status-item hide-mobile">NODE himanshu@workbench</span>
     </div>
   )
-}
+})
+
+export default StatusBar

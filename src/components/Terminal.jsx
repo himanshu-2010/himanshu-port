@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, memo } from 'react'
 
-export default function Terminal({ lines }) {
+const Terminal = memo(function Terminal({ lines }) {
   const bodyRef = useRef(null)
-  const [visible, setVisible] = useState(false)
-
   useEffect(() => {
     const body = bodyRef.current
     if (!body) return
     body.innerHTML = ''
     let totalDelay = 0
+    const timeouts = []
 
-    lines.forEach((line, idx) => {
+    lines.forEach((line) => {
       totalDelay += line.delay || 200
       const timeout = setTimeout(() => {
         const div = document.createElement('div')
@@ -28,10 +27,10 @@ export default function Terminal({ lines }) {
         requestAnimationFrame(() => div.classList.add('visible'))
         body.scrollTop = body.scrollHeight
       }, totalDelay)
+      timeouts.push(timeout)
     })
 
-    setVisible(true)
-    return () => {}
+    return () => timeouts.forEach(clearTimeout)
   }, [lines])
 
   return (
@@ -45,4 +44,6 @@ export default function Terminal({ lines }) {
       <div className="terminal-body" ref={bodyRef}></div>
     </div>
   )
-}
+})
+
+export default Terminal

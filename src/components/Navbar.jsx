@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import SearchModal from './SearchModal'
+import { useState, useEffect, memo, lazy, Suspense } from 'react'
 
-export default function Navbar({ links, onOpenGallery, portfolio, onOpenProject, onOpenSecret, onGoToSection }) {
+const SearchModal = lazy(() => import('./SearchModal'))
+
+const Navbar = memo(function Navbar({ links, onOpenGallery, portfolio, onOpenProject, onOpenSecret, onGoToSection }) {
   const [showSearch, setShowSearch] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -9,7 +10,7 @@ export default function Navbar({ links, onOpenGallery, portfolio, onOpenProject,
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     const sections = document.querySelectorAll('section[id]')
     const observer = new IntersectionObserver((entries) => {
@@ -108,8 +109,12 @@ export default function Navbar({ links, onOpenGallery, portfolio, onOpenProject,
       </div>
 
       {showSearch && (
-        <SearchModal portfolio={portfolio} onClose={() => setShowSearch(false)} onOpenProject={onOpenProject} onOpenGallery={onOpenGallery} onOpenSecret={onOpenSecret} />
+        <Suspense fallback={null}>
+          <SearchModal portfolio={portfolio} onClose={() => setShowSearch(false)} onOpenProject={onOpenProject} onOpenGallery={onOpenGallery} onOpenSecret={onOpenSecret} />
+        </Suspense>
       )}
     </>
   )
-}
+})
+
+export default Navbar

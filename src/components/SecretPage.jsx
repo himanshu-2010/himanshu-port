@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo } from 'react'
 
 const STORAGE_KEY = 'secret_auth'
 
-export default function SecretPage({ secret, onBack }) {
+const SecretPage = memo(function SecretPage({ secret, onBack }) {
   const [password, setPassword] = useState('')
   const [unlocked, setUnlocked] = useState(false)
   const [error, setError] = useState('')
@@ -180,4 +180,6 @@ export default function SecretPage({ secret, onBack }) {
       </div>
     </div>
   )
-}
+})
+
+export default SecretPage

@@ -1,4 +1,6 @@
-export default function About({ personal }) {
+import { memo } from 'react'
+
+const About = memo(function About({ personal }) {
   return (
     <section className="section about-section" id="about">
       <div className="container">
@@ -48,4 +50,6 @@ export default function About({ personal }) {
       </div>
     </section>
   )
-}
+})
+
+export default About

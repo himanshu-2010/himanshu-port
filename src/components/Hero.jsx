@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react'
+import { memo } from 'react'
 import Terminal from './Terminal'
 
-export default function Hero({ personal, links }) {
+const Hero = memo(function Hero({ personal, links }) {
   return (
     <section className="hero-section" id="hero">
       <div className="hero-bg-pcb">
@@ -48,4 +48,6 @@ export default function Hero({ personal, links }) {
       </div>
     </section>
   )
-}
+})
+
+export default Hero

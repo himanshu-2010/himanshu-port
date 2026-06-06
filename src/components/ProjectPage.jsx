@@ -1,4 +1,6 @@
-export default function ProjectPage({ project, onBack }) {
+import { memo } from 'react'
+
+const ProjectPage = memo(function ProjectPage({ project, onBack }) {
   if (!project) return null
 
   const statusLabel = project.status.toUpperCase()
@@ -145,4 +147,6 @@ export default function ProjectPage({ project, onBack }) {
       </div>
     </div>
   )
-}
+})
+
+export default ProjectPage
