@@ -144,12 +144,12 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
           <p className="secret-subtitle">{secret.subtitle}</p>
         </div>
 
-        <div className=\"secret-lines\">
-          <p className=\"secret-line\" style={{ color: 'var(--brand-cyan)', fontWeight: 'bold', marginBottom: '1rem' }}>
+        <div className="secret-lines">
+          <p className="secret-line" style={{ color: 'var(--brand-cyan)', fontWeight: 'bold', marginBottom: '1rem' }}>
             himanshu : the waste of time you said i didnt like that even if you dont have anyhting for me why to disrespect anyones hardwork this hurts i think you will understand
           </p>
           {secret.lines.map((line, i) => (
-            <p key={i} className=\"secret-line\">{line}</p>
+            <p key={i} className="secret-line">{line}</p>
           ))}
         </div>
 
