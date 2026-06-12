@@ -1360,3 +1360,44 @@ textarea.form-input { min-height: 80px; resize: vertical; }
   font-style: italic; color: var(--text-dim); opacity: 0.6;
   margin-top: 0.5rem;
 }
+
+
+/* Broken Heart Background Effect */
+.secret-broken-heart-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.heart-shape {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background: rgba(139, 0, 0, 0.2); /* Dull Red */
+  filter: blur(20px);
+  clip-path: path('M 150 100 C 150 100 100 50 50 50 C 0 50 0 150 150 250 C 300 150 300 50 250 50 C 200 50 150 100 150 100 Z');
+  transform: translateZ(0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  animation: heartPulse 4s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+}
+
+/* This will be handled by JS for the "crumble" part, 
+   but we can add a class for the state */
+.heart-crumbling {
+  animation: crumble 1.5s forwards ease-in;
+}
+
+@keyframes crumble {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+  100% { transform: scale(2) rotate(15deg); opacity: 0; filter: blur(50px); }
+}

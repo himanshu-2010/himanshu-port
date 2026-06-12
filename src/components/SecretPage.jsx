@@ -9,6 +9,7 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   const [confirmSoumya, setConfirmSoumya] = useState(() => localStorage.getItem(STORAGE_KEY) === 'true')
   const [lightbox, setLightbox] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [isCrumbling, setIsCrumbling] = useState(false)
   const drawerRef = useRef(null)
 
   useEffect(() => {
@@ -25,6 +26,18 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
       }
     }
   }, [drawerOpen])
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setIsCrumbling(true)
+      } else {
+        setIsCrumbling(false)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -56,6 +69,10 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   if (!unlocked && confirmSoumya) {
     return (
       <div className="secret-page">
+      <div className="secret-broken-heart-bg">
+        <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
+      </div>
+
         <div className="secret-gate">
           <div className="secret-lock-icon">&#x1F590;</div>
           <h2 className="secret-gate-title">Are you Soumya?</h2>
@@ -73,6 +90,10 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   if (!unlocked) {
     return (
       <div className="secret-page">
+      <div className="secret-broken-heart-bg">
+        <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
+      </div>
+
         <div className="secret-gate">
           <div className="secret-lock-icon">&#x1F512;</div>
           <h2 className="secret-gate-title">Restricted Area</h2>
@@ -103,6 +124,10 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
 
   return (
     <div className="secret-page">
+      <div className="secret-broken-heart-bg">
+        <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
+      </div>
+
       <div className="secret-hearts">
         <span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span>
         <span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span>
@@ -119,9 +144,12 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
           <p className="secret-subtitle">{secret.subtitle}</p>
         </div>
 
-        <div className="secret-lines">
+        <div className=\"secret-lines\">
+          <p className=\"secret-line\" style={{ color: 'var(--brand-cyan)', fontWeight: 'bold', marginBottom: '1rem' }}>
+            himanshu : the waste of time you said i didnt like that even if you dont have anyhting for me why to disrespect anyones hardwork this hurts i think you will understand
+          </p>
           {secret.lines.map((line, i) => (
-            <p key={i} className="secret-line">{line}</p>
+            <p key={i} className=\"secret-line\">{line}</p>
           ))}
         </div>
 
