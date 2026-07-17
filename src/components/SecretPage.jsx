@@ -1,6 +1,59 @@
 import { useState, useRef, useEffect, memo } from 'react'
+import IntroLoader from './IntroLoader'
 
 const STORAGE_KEY = 'secret_auth'
+const BROKEN_KEY = 'secret_broken'
+
+const HEART_TO_BROKEN = /[💜❤♥]/g
+
+const GLITCH_CHARS = '!<>-_\\/[]{}=+*^?#%&@01'
+
+function GlitchName({ className = '' }) {
+  const finalText = 'demonlord'
+  const [text, setText] = useState('himanshu')
+
+  useEffect(() => {
+    let timer
+    let raf
+
+    const cycle = () => {
+      setText('himanshu')
+      timer = setTimeout(() => {
+        const total = 36
+        const scramble = 24
+        let f = 0
+        const step = () => {
+          f++
+          if (f <= scramble) {
+            setText(
+              Array.from({ length: finalText.length },
+                () => GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]).join('')
+            )
+          } else if (f <= total) {
+            const revealed = f - scramble
+            setText(
+              Array.from({ length: finalText.length }, (_, i) =>
+                i < revealed ? finalText[i] : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]).join('')
+            )
+          } else {
+            setText(finalText)
+            timer = setTimeout(cycle, 5000)
+            return
+          }
+          raf = requestAnimationFrame(step)
+        }
+        step()
+      }, 700)
+    }
+
+    cycle()
+    return () => { clearTimeout(timer); cancelAnimationFrame(raf) }
+  }, [])
+
+  return (
+    <span className={`secret-glitch ${className}`} data-text={finalText}>{text}</span>
+  )
+}
 
 const SecretPage = memo(function SecretPage({ secret, onBack }) {
   const [password, setPassword] = useState('')
@@ -10,6 +63,8 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   const [lightbox, setLightbox] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [isCrumbling, setIsCrumbling] = useState(false)
+  const [broken, setBroken] = useState(() => localStorage.getItem(BROKEN_KEY) === 'true')
+  const [introActive, setIntroActive] = useState(false)
   const drawerRef = useRef(null)
 
   useEffect(() => {
@@ -38,12 +93,18 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (unlocked && !broken) setIntroActive(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
 
   function handleSubmit(e) {
     e.preventDefault()
     if (password === 'himanshu.ilu') {
       localStorage.setItem(STORAGE_KEY, 'true')
       setUnlocked(true)
+      if (!broken) setIntroActive(true)
       setError('')
     } else {
       setError('access denied — wrong passkey')
@@ -53,6 +114,7 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   function handleConfirm(isSoumya) {
     if (isSoumya) {
       setUnlocked(true)
+      if (!broken) setIntroActive(true)
     } else {
       localStorage.removeItem(STORAGE_KEY)
       setConfirmSoumya(false)
@@ -64,6 +126,18 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
     setUnlocked(false)
     setConfirmSoumya(false)
     setPassword('')
+  }
+
+  function handleIntroDone() {
+    setIntroActive(false)
+    setTimeout(() => {
+      setBroken(true)
+      try { localStorage.setItem(BROKEN_KEY, 'true') } catch (e) {}
+    }, 5000)
+  }
+
+  function handleReplay() {
+    setIntroActive(true)
   }
 
   if (!unlocked && confirmSoumya) {
@@ -123,35 +197,40 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   }
 
   return (
-    <div className="secret-page">
-      <div className="secret-broken-heart-bg">
-        <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
-      </div>
+    <div className={`secret-page ${broken ? 'broken' : ''}`}>
+      {broken && (
+        <div className="secret-broken-heart-bg">
+          <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
+        </div>
+      )}
 
       <div className="secret-hearts">
-        <span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span>
-        <span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span><span>&#x2665;</span>
-        <span>&#x2665;</span><span>&#x2665;</span>
+        {Array.from({ length: 12 }).map((_, i) => (
+          <span key={i}>{broken ? '💔' : '♥'}</span>
+        ))}
       </div>
+
+      {introActive && (
+        <IntroLoader texts={secret.introTexts || []} onComplete={handleIntroDone} />
+      )}
       <div className="secret-container">
         <div className="secret-top-bar">
           <button className="secret-back" onClick={onBack}>&larr; Back to portfolio</button>
+          <button className="secret-replay" onClick={handleReplay}>[ Replay Intro ]</button>
           <button className="secret-logout" onClick={handleLogout}>[ Lock this page ]</button>
         </div>
 
         <div className="secret-header">
-          <h1 className="secret-title">{secret.title}</h1>
+          <h1 className="secret-title">{broken ? secret.title.replace(HEART_TO_BROKEN, '💔') : secret.title}</h1>
           <p className="secret-subtitle">{secret.subtitle}</p>
         </div>
 
         <div className="secret-lines">
-          <p className="secret-line" style={{ color: 'var(--brand-cyan)', fontWeight: 'bold', marginBottom: '1rem' }}>
-            himanshu : the waste of time you said i didnt like that even if you dont have anyhting for me why to disrespect anyones hardwork this hurts i think you will understand
-          </p>
           {secret.lines.map((line, i) => (
-            <p key={i} className="secret-line">{line}</p>
+            <p key={i} className={`secret-line ${i < 2 ? 'secret-line--message' : ''}`}>{line}</p>
           ))}
         </div>
+        <div className="secret-signature">— <GlitchName /></div>
 
         <div className="secret-masonry">
           {allImages.map((item, i) => (

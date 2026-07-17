@@ -1009,7 +1009,13 @@
   "secret": {
     "title": "For Soumya 💜",
     "subtitle": "some things are worth keeping secret",
+    "introTexts": [
+      "You didn't break my heart—you changed the way I'll trust people forever.",
+      "The gate may be closed but never locked. I may not have been your first priority, but you were always mine."
+    ],
     "lines": [
+      "You didn't break my heart—you changed the way I'll trust people forever.",
+      "The gate may be closed but never locked. I may not have been your first priority, but you were always mine.",
       "this page is for you, babita 💜",
       "for the girl who makes my heart skip a beat every single time.",
       "for the smile that lights up even my darkest days.",
@@ -1023,8 +1029,7 @@
       "i don't know what the future holds,",
       "but i know i want you in it.",
       "every moment with you feels like a memory i want to keep forever.",
-      "thank you for existing, soumya.",
-      "— himanshu"
+      "thank you for existing, soumya."
     ],
     "madeImages": [
       {
