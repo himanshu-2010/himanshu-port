@@ -2,14 +2,20 @@ import { useState, useRef, useEffect, memo } from 'react'
 import IntroLoader from './IntroLoader'
 
 const STORAGE_KEY = 'secret_auth'
-const BROKEN_KEY = 'secret_broken'
-
-const HEART_TO_BROKEN = /[💜❤♥]/g
+const VIBE_KEY = 'secret_vibe_override'
+const AI_KEY = 'secret_show_ai'
 
 const GLITCH_CHARS = '!<>-_\\/[]{}=+*^?#%&@01'
 
-function GlitchName({ className = '' }) {
-  const finalText = 'demonlord'
+function getVibe() {
+  const now = new Date()
+  return now.getMonth() === 8 ? 'birthday' : 'friend'
+}
+
+const FRIEND_HEARTS = ['♥', '💜', '🫶']
+const BIRTHDAY_HEARTS = ['🎂', '🎈', '💖', '🎉', '✨', '🫶']
+
+function GlitchName({ className = '', finalText = 'demonlord' }) {
   const [text, setText] = useState('himanshu')
 
   useEffect(() => {
@@ -48,7 +54,7 @@ function GlitchName({ className = '' }) {
 
     cycle()
     return () => { clearTimeout(timer); cancelAnimationFrame(raf) }
-  }, [])
+  }, [finalText])
 
   return (
     <span className={`secret-glitch ${className}`} data-text={finalText}>{text}</span>
@@ -56,15 +62,35 @@ function GlitchName({ className = '' }) {
 }
 
 const SecretPage = memo(function SecretPage({ secret, onBack }) {
+  const [vibe, setVibe] = useState(() => localStorage.getItem(VIBE_KEY) || getVibe())
+  const isBirthday = vibe === 'birthday'
+  const birthday = secret.birthday || {}
+  const content = isBirthday ? birthday : secret
+  const introTexts = isBirthday ? (birthday.introTexts || secret.introTexts || []) : (secret.introTexts || [])
+  const lines = isBirthday ? (birthday.lines || secret.lines || []) : (secret.lines || [])
+  const hearts = isBirthday ? BIRTHDAY_HEARTS : FRIEND_HEARTS
+
+  useEffect(() => {
+    window.__setSecretVibe = (v) => {
+      if (v === 'birthday' || v === 'friend') {
+        localStorage.setItem(VIBE_KEY, v)
+        setVibe(v)
+      } else if (v === null) {
+        localStorage.removeItem(VIBE_KEY)
+        setVibe(getVibe())
+      }
+    }
+    return () => { delete window.__setSecretVibe }
+  }, [])
+
   const [password, setPassword] = useState('')
   const [unlocked, setUnlocked] = useState(false)
   const [error, setError] = useState('')
   const [confirmSoumya, setConfirmSoumya] = useState(() => localStorage.getItem(STORAGE_KEY) === 'true')
   const [lightbox, setLightbox] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [isCrumbling, setIsCrumbling] = useState(false)
-  const [broken, setBroken] = useState(() => localStorage.getItem(BROKEN_KEY) === 'true')
   const [introActive, setIntroActive] = useState(false)
+  const [showAi, setShowAi] = useState(() => localStorage.getItem(AI_KEY) !== 'off')
   const drawerRef = useRef(null)
 
   useEffect(() => {
@@ -81,30 +107,18 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
       }
     }
   }, [drawerOpen])
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setIsCrumbling(true)
-      } else {
-        setIsCrumbling(false)
-      }
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
-    if (unlocked && !broken) setIntroActive(true)
+    if (unlocked) setIntroActive(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
 
   function handleSubmit(e) {
     e.preventDefault()
     if (password === 'himanshu.ilu') {
       localStorage.setItem(STORAGE_KEY, 'true')
       setUnlocked(true)
-      if (!broken) setIntroActive(true)
+      setIntroActive(true)
       setError('')
     } else {
       setError('access denied — wrong passkey')
@@ -114,7 +128,7 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
   function handleConfirm(isSoumya) {
     if (isSoumya) {
       setUnlocked(true)
-      if (!broken) setIntroActive(true)
+      setIntroActive(true)
     } else {
       localStorage.removeItem(STORAGE_KEY)
       setConfirmSoumya(false)
@@ -130,22 +144,27 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
 
   function handleIntroDone() {
     setIntroActive(false)
-    setTimeout(() => {
-      setBroken(true)
-      try { localStorage.setItem(BROKEN_KEY, 'true') } catch (e) {}
-    }, 5000)
   }
 
   function handleReplay() {
     setIntroActive(true)
   }
 
+  function handleAiToggle() {
+    setShowAi(s => {
+      localStorage.setItem(AI_KEY, s ? 'off' : 'on')
+      return !s
+    })
+  }
+
+  const pageClass = `secret-page${isBirthday ? ' vibe-birthday' : ''}`
+
   if (!unlocked && confirmSoumya) {
     return (
-      <div className="secret-page">
-      <div className="secret-broken-heart-bg">
-        <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
-      </div>
+      <div className={pageClass}>
+        <div className="secret-heart-bg">
+          <div className="heart-shape"></div>
+        </div>
 
         <div className="secret-gate">
           <div className="secret-lock-icon">&#x1F590;</div>
@@ -163,10 +182,10 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
 
   if (!unlocked) {
     return (
-      <div className="secret-page">
-      <div className="secret-broken-heart-bg">
-        <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
-      </div>
+      <div className={pageClass}>
+        <div className="secret-heart-bg">
+          <div className="heart-shape"></div>
+        </div>
 
         <div className="secret-gate">
           <div className="secret-lock-icon">&#x1F512;</div>
@@ -190,28 +209,26 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
     )
   }
 
-  const allImages = [...(secret.originals || []), ...(secret.madeImages || [])]
+  const allImages = [...(secret.originals || []), ...(showAi ? (secret.madeImages || []) : [])]
 
   function openLightbox(item) {
     setLightbox(item)
   }
 
   return (
-    <div className={`secret-page ${broken ? 'broken' : ''}`}>
-      {broken && (
-        <div className="secret-broken-heart-bg">
-          <div className={`heart-shape ${isCrumbling ? "heart-crumbling" : ""}`}></div>
-        </div>
-      )}
+    <div className={pageClass}>
+      <div className="secret-heart-bg">
+        <div className="heart-shape"></div>
+      </div>
 
       <div className="secret-hearts">
         {Array.from({ length: 12 }).map((_, i) => (
-          <span key={i}>{broken ? '💔' : '♥'}</span>
+          <span key={i}>{hearts[i % hearts.length]}</span>
         ))}
       </div>
 
       {introActive && (
-        <IntroLoader texts={secret.introTexts || []} onComplete={handleIntroDone} />
+        <IntroLoader texts={introTexts} onComplete={handleIntroDone} />
       )}
       <div className="secret-container">
         <div className="secret-top-bar">
@@ -221,16 +238,22 @@ const SecretPage = memo(function SecretPage({ secret, onBack }) {
         </div>
 
         <div className="secret-header">
-          <h1 className="secret-title">{broken ? secret.title.replace(HEART_TO_BROKEN, '💔') : secret.title}</h1>
-          <p className="secret-subtitle">{secret.subtitle}</p>
+          <h1 className="secret-title">{content.title || secret.title}</h1>
+          <p className="secret-subtitle">{content.subtitle || secret.subtitle}</p>
         </div>
 
         <div className="secret-lines">
-          {secret.lines.map((line, i) => (
+          {lines.map((line, i) => (
             <p key={i} className={`secret-line ${i < 2 ? 'secret-line--message' : ''}`}>{line}</p>
           ))}
         </div>
-        <div className="secret-signature">— <GlitchName /></div>
+        <div className="secret-signature">— <GlitchName finalText={content.signature || 'demonlord'} /></div>
+
+        <div className="secret-controls">
+          <button className={`secret-ai-toggle${showAi ? ' on' : ''}`} onClick={handleAiToggle}>
+            [ AI Images: {showAi ? 'ON' : 'OFF'} ]
+          </button>
+        </div>
 
         <div className="secret-masonry">
           {allImages.map((item, i) => (

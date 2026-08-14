@@ -1010,12 +1010,12 @@
     "title": "For Soumya 💜",
     "subtitle": "some things are worth keeping secret",
     "introTexts": [
-      "You didn't break my heart—you changed the way I'll trust people forever.",
-      "The gate may be closed but never locked. I may not have been your first priority, but you were always mine."
+      "kuch raaste khud ban jaate hain, kuch log likhe milte hain — tum mile toh laga, puri kismat jhoothi nahi thi 🫶",
+      "teri hassi se din roshan, teri baaton se shaam — tum ho toh kaafi, tum nahi toh kami."
     ],
     "lines": [
-      "You didn't break my heart—you changed the way I'll trust people forever.",
-      "The gate may be closed but never locked. I may not have been your first priority, but you were always mine.",
+      "ek dost, ek saathi, ek kahani — tum ho toh sab kuch hai, babita.",
+      "kabhi hasi ki wajah, kabhi baat ki wajah, kabhi nazar jhukane ki wajah — har baar bas tum.",
       "this page is for you, babita 💜",
       "for the girl who makes my heart skip a beat every single time.",
       "for the smile that lights up even my darkest days.",
@@ -1026,9 +1026,11 @@
       "i love the way your eyes crinkle when you smile.",
       "i love the way you pretend to be annoyed but laugh anyway.",
       "i love that you're goofy, smart, and absolutely impossible to forget.",
+      "teri zidd hai, teri naraazgi hai, aur phir khud hi has dena hai — poori package deal hai tu, aur maine poora saara kharid liya hai 😄",
       "i don't know what the future holds,",
       "but i know i want you in it.",
       "every moment with you feels like a memory i want to keep forever.",
+      "jahan tum ho, wahan main hoon — yeh wada hai, dosti wala pakka.",
       "thank you for existing, soumya."
     ],
     "madeImages": [
@@ -2315,7 +2317,61 @@
       {
         "src": "/images/secret/himanshu.png",
         "height": 240
+      },
+      {
+        "src": "/images/secret/730347721_1752922739398753_4685848224402015872_n.jpg",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/736206937_1292263276053944_3876308505596587372_n.webp",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/736805195_1464534129047640_4238867114295761431_n.webp",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/765769535_1003685062495651_6396440705320647704_n.jpg",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/766093780_2571264033354837_2490760374522730149_n.jpg",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/766464885_933826336400238_3179711127112958044_n.jpg",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/766544366_1758678745277549_3861923090712708111_n.jpg",
+        "height": 400
+      },
+      {
+        "src": "/images/secret/769412130_1090384683661272_3658995174954211134_n.jpg",
+        "height": 400
       }
-    ]
+    ],
+    "birthday": {
+      "title": "Happy Birthday Soumya 🎂",
+      "subtitle": "september is officially your month now",
+      "signature": "soumya 🎂",
+      "introTexts": [
+        "janamdin mubarak ho babita 🎂 — aaj ka din tera hai, aur poori september teri.",
+        "khuda ne socha hoga ki duniya mein ek hassi aur honi chahiye — aur tum paida hui 🎈"
+      ],
+      "lines": [
+        "happy birthday, soumya 🎂",
+        "this page is for you — my favourite person, my best friend, my babita.",
+        "aaj ka din sirf tera hai — album mein se wo chaand wala din.",
+        "umr badhe, haseen raho, aur wo ziddi smile kabhi na chhute.",
+        "teri hassi meri favourite cheez hai — use roz dikhana, clear?",
+        "jo khone jaisa laga, wo laut aaye; jo nahi mila, wo mil jaaye.",
+        "nayi umra, naye sapne, aur wahi purani baatein jab tak raat baaki hai.",
+        "kabhi kabhi lagta hai khuda ne bhi achha banaya hai kuch — tum usi mein se ek ho.",
+        "thank you for existing, for laughing at my jokes, and for rolling your eyes when i call you babita.",
+        "i may not have the world's best words, but i have all the time in the world for you.",
+        "janamdin mubarak, babita — yeh page, yeh shayariyan, aur yeh dil, sab tera. 🎂💜"
+      ]
+    }
   }
 }
